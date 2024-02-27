@@ -39,7 +39,13 @@ app.get("/api/:date", (req, res) => {
     date = new Date(req.params.date);
     unixTimestamp = Math.floor(new Date(req.params.date).getTime()); 
   }
+  
+  if(date.toString() === "Invalid Date") {
+    res.json({ error: "Invalid Date" });
+    return;
+  }
   res.json({ unix: unixTimestamp, utc: date.toUTCString() });
+  
 });
 
 app.get("/api/", (req, res) => {
