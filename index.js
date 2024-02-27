@@ -24,6 +24,31 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+const isUnixTimestampValid = (dateStr) => {
+  return !isNaN(Number(dateStr));
+}
+
+app.get("/api/:date", (req, res) => {
+  let date;
+  let unixTimestamp;
+
+  if(isUnixTimestampValid(req.params.date)) {
+    date = new Date(Number(req.params.date));
+    unixTimestamp = Number(req.params.date);
+  } else {
+    date = new Date(req.params.date);
+    unixTimestamp = Math.floor(new Date(req.params.date).getTime()); 
+  }
+  res.json({ unix: unixTimestamp, utc: date.toUTCString() });
+});
+
+app.get("/api/", (req, res) => {
+  let date = new Date();
+  let unixTimestamp = Math.floor(new Date().getTime());
+  
+  res.json({ unix: unixTimestamp, utc: date.toUTCString() });
+});
+
 
 
 // Listen on port set in environment variable or default to 3000
